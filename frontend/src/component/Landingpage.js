@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Trophy, Users, MapPin, Star, ArrowRight, ChevronRight } from 'lucide-react';
+import { Calendar, Trophy, Users, MapPin, Star, ArrowRight } from 'lucide-react';
 import { tournamentAPI, userAPI } from '../services/api';
 
 const CricketTournamentLanding = () => {
@@ -319,22 +319,11 @@ const CricketTournamentLanding = () => {
     'Puducherry': ['Karaikal', 'Mahe', 'Puducherry', 'Yanam']
   };
 
-  // Filter tournaments based on status
-  const upcomingTournaments = tournaments.filter(tournament => 
-    tournament.status === 'upcoming' || tournament.status === 'active'
-  ).map(tournament => ({
-    id: tournament._id,
-    title: tournament.title,
-    date: `${new Date(tournament.startDate).toLocaleDateString()} - ${new Date(tournament.endDate).toLocaleDateString()}`,
-    venue: tournament.venue,
-    teams: tournament.maxTeams,
-    prizePool: `₹${tournament.prizePool.toLocaleString()}`,
-    status: new Date(tournament.registrationDeadline) > new Date() ? 'Registration Open' : 'Coming Soon',
-    image: '🏏'
-  }));
-
-  const previousTournaments = tournaments.filter(tournament => 
-    tournament.status === 'completed'
+  // Filter tournaments based on status and use them directly in the component
+  const filteredTournaments = tournaments.filter(tournament => 
+    activeTab === 'upcoming' 
+      ? (tournament.status === 'upcoming' || tournament.status === 'active')
+      : tournament.status === 'completed'
   ).map(tournament => ({
     id: tournament._id,
     title: tournament.title,
