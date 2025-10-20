@@ -319,22 +319,24 @@ const CricketTournamentLanding = () => {
     'Puducherry': ['Karaikal', 'Mahe', 'Puducherry', 'Yanam']
   };
 
-  // Filter and map tournaments based on active tab
-  const displayTournaments = tournaments
-    .filter(tournament => 
-      activeTab === 'upcoming' 
-        ? (tournament.status === 'upcoming' || tournament.status === 'active')
-        : tournament.status === 'completed'
-    )
-    .map(tournament => ({
-    id: tournament._id,
-    title: tournament.title,
-    date: `${new Date(tournament.startDate).toLocaleDateString()} - ${new Date(tournament.endDate).toLocaleDateString()}`,
-    winner: tournament.winner || 'TBD',
-    runner: tournament.runnerUp || 'TBD',
-    teams: tournament.maxTeams,
-    image: '🏆'
-  }));
+  // Filter and map tournaments based on active tab and use directly in the component
+  const displayTournaments = React.useMemo(() => {
+    return tournaments
+      .filter(tournament => 
+        activeTab === 'upcoming' 
+          ? (tournament.status === 'upcoming' || tournament.status === 'active')
+          : tournament.status === 'completed'
+      )
+      .map(tournament => ({
+        ...tournament,
+        id: tournament._id,
+        date: `${new Date(tournament.startDate).toLocaleDateString()} - ${new Date(tournament.endDate).toLocaleDateString()}`,
+        winner: tournament.winner || 'TBD',
+        runner: tournament.runnerUp || 'TBD',
+        teams: tournament.maxTeams,
+        image: '🏆'
+      }));
+  }, [tournaments, activeTab]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -597,17 +599,12 @@ const CricketTournamentLanding = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {(() => {
-                const filteredTournaments = tournaments.filter(tournament => {
-                  return activeTab === 'upcoming' 
-                    ? tournament.status === 'upcoming' || tournament.status === 'active'
-                    : tournament.status === 'completed';
-                });
-                console.log(`📊 Displaying ${filteredTournaments.length} tournaments for tab: ${activeTab}`);
-                console.log('📋 Filtered tournaments:', filteredTournaments);
-                return filteredTournaments;
-              })()
-              .map((tournament) => (
+              {loading ? (
+                <div className="col-span-3 flex justify-center items-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+                </div>
+              ) : displayTournaments.length > 0 ? (
+                displayTournaments.map((tournament) => (
                   <div key={tournament._id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
                     <div className="relative">
                       <div className="h-48 bg-gradient-to-br from-blue-600 to-green-600 flex items-center justify-center">
@@ -680,11 +677,24 @@ const CricketTournamentLanding = () => {
                     </div>
                   </div>
                 ))
-              }
+              ) : (
+                <div className="col-span-3 text-center py-12">
+                  <div className="text-gray-400 text-5xl mb-4">🏏</div>
+                  <h3 className="text-xl font-semibold text-gray-600">
+                    {activeTab === 'upcoming' 
+                      ? 'No upcoming tournaments at the moment.' 
+                      : 'No previous tournaments found.'}
+                  </h3>
+                  <p className="text-gray-500 mt-2">
+                    {activeTab === 'upcoming' 
+                      ? 'Check back later for new tournaments!' 
+                      : 'Stay tuned for future tournaments!'}
+                  </p>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
 
       {/* Registration Modal */}
       {showRegistration && (
