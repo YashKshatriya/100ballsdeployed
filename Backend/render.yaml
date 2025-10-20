@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: cricket-backend
+    env: node
+    buildCommand: npm install
+    startCommand: node --experimental-modules server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: cricket-db
+          property: connectionString
+    plan: free
+    autoDeploy: true
