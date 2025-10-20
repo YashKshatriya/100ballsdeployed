@@ -319,12 +319,14 @@ const CricketTournamentLanding = () => {
     'Puducherry': ['Karaikal', 'Mahe', 'Puducherry', 'Yanam']
   };
 
-  // Filter tournaments based on status and use them directly in the component
-  const filteredTournaments = tournaments.filter(tournament => 
-    activeTab === 'upcoming' 
-      ? (tournament.status === 'upcoming' || tournament.status === 'active')
-      : tournament.status === 'completed'
-  ).map(tournament => ({
+  // Filter and map tournaments based on active tab
+  const displayTournaments = tournaments
+    .filter(tournament => 
+      activeTab === 'upcoming' 
+        ? (tournament.status === 'upcoming' || tournament.status === 'active')
+        : tournament.status === 'completed'
+    )
+    .map(tournament => ({
     id: tournament._id,
     title: tournament.title,
     date: `${new Date(tournament.startDate).toLocaleDateString()} - ${new Date(tournament.endDate).toLocaleDateString()}`,
