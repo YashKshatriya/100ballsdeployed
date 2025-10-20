@@ -12,8 +12,32 @@ const app = express();
 // connect to db
 connectDB();
 
-// middleware
-app.use(cors());
+// CORS configuration
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:3000',  // default React port
+      'http://localhost:3001',  // your frontend port
+      process.env.FRONTEND_URL  // production frontend URL
+    ];
+    
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `The CORS policy for this site does not allow access from the specified origin: ${origin}`;
+      return callback(new Error(msg), false);
+    }
+    
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+
+// Apply CORS with options
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Request logging middleware

@@ -1,17 +1,21 @@
 services:
   - type: web
-    name: cricket-backend
+    name: cricket-tournament-api
     env: node
     buildCommand: npm install
-    startCommand: node --experimental-modules server.js
+    startCommand: node server.js
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
-      - key: MONGODB_URI
-        fromDatabase:
-          name: cricket-db
-          property: connectionString
+      - key: MONGO_URI
+        value: ${MONGO_URI}
+      - key: JWT_SECRET
+        value: ${JWT_SECRET}
+      - key: JWT_EXPIRE
+        value: 30d
+      - key: FRONTEND_URL
+        value: ${FRONTEND_URL}
     plan: free
     autoDeploy: true

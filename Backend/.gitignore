@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+npm-debug.log*
+
+# Runtime data
+.idea/
+.vscode/
+.DS_Store
+
+# Build output
+build/
+dist/
+
+# Misc
+*.pem
+*.p8
+*.key
+*.crt
+*.cer
