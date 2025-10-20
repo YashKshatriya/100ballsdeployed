@@ -2,6 +2,7 @@ services:
   - type: web
     name: cricket-tournament-api
     env: node
+    rootDir: Backend  # This tells Render where to find the package.json
     buildCommand: npm install
     startCommand: node server.js
     envVars:
