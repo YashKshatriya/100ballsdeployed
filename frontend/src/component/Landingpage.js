@@ -550,151 +550,184 @@ const CricketTournamentLanding = () => {
         </div>
       </section>
 
-      {/* Tournament Sections */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-6">
-          {/* Tab Navigation */}
-          <div className="flex justify-center mb-12">
-            <div className="bg-gray-100 p-2 rounded-full flex space-x-2">
-              <button
-                onClick={() => setActiveTab('upcoming')}
-                className={`px-8 py-3 rounded-full font-semibold transition duration-300 flex items-center space-x-2 ${
-                  activeTab === 'upcoming' 
-                    ? 'bg-blue-600 text-white shadow-lg' 
-                    : 'text-gray-600 hover:text-blue-600'
-                }`}
-              >
-                <Calendar className="w-5 h-5" />
-                <span>Upcoming</span>
-              </button>
-              <button
-                onClick={() => setActiveTab('previous')}
-                className={`px-8 py-3 rounded-full font-semibold transition duration-300 flex items-center space-x-2 ${
-                  activeTab === 'previous' 
-                    ? 'bg-blue-600 text-white shadow-lg' 
-                    : 'text-gray-600 hover:text-blue-600'
-                }`}
-              >
-                <Trophy className="w-5 h-5" />
-                <span>Previous</span>
-              </button>
-            </div>
-          </div>
+{/* Tournament Sections */}
+<section className="py-16 bg-white">
+  <div className="container mx-auto px-6">
+    {/* Tab Navigation */}
+    <div className="flex justify-center mb-12">
+      <div className="bg-gray-100 p-2 rounded-full flex space-x-2">
+        <button
+          onClick={() => setActiveTab("upcoming")}
+          className={`px-8 py-3 rounded-full font-semibold transition duration-300 flex items-center space-x-2 ${
+            activeTab === "upcoming"
+              ? "bg-blue-600 text-white shadow-lg"
+              : "text-gray-600 hover:text-blue-600"
+          }`}
+        >
+          <Calendar className="w-5 h-5" />
+          <span>Upcoming</span>
+        </button>
 
-          {/* Tournament Cards */}
-          {loading ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                <p className="text-gray-600">Loading tournaments...</p>
-              </div>
-            </div>
-          ) : error ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="text-center">
-                <div className="text-6xl mb-4">⚠️</div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">Error Loading Tournaments</h3>
-                <p className="text-gray-600">{error}</p>
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {loading ? (
-                <div className="col-span-3 flex justify-center items-center py-12">
-                  <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+        <button
+          onClick={() => setActiveTab("previous")}
+          className={`px-8 py-3 rounded-full font-semibold transition duration-300 flex items-center space-x-2 ${
+            activeTab === "previous"
+              ? "bg-blue-600 text-white shadow-lg"
+              : "text-gray-600 hover:text-blue-600"
+          }`}
+        >
+          <Trophy className="w-5 h-5" />
+          <span>Previous</span>
+        </button>
+      </div>
+    </div>
+
+    {/* Tournament Cards */}
+    {loading ? (
+      <div className="flex justify-center items-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading tournaments...</p>
+        </div>
+      </div>
+    ) : error ? (
+      <div className="flex justify-center items-center h-64">
+        <div className="text-center">
+          <div className="text-6xl mb-4">⚠️</div>
+          <h3 className="text-2xl font-bold text-gray-800 mb-2">
+            Error Loading Tournaments
+          </h3>
+          <p className="text-gray-600">{error}</p>
+        </div>
+      </div>
+    ) : (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {loading ? (
+          <div className="col-span-3 flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-600"></div>
+          </div>
+        ) : displayTournaments.length > 0 ? (
+          displayTournaments.map((tournament) => (
+            <div
+              key={tournament._id}
+              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300"
+            >
+              <div className="relative">
+                <div className="h-48 bg-gradient-to-br from-blue-600 to-green-600 flex items-center justify-center">
+                  <div className="text-white text-center">
+                    <div className="text-5xl mb-2">🏏</div>
+                    <h3 className="text-2xl font-bold">{tournament.title}</h3>
+                  </div>
                 </div>
-              ) : displayTournaments.length > 0 ? (
-                displayTournaments.map((tournament) => (
-                  <div key={tournament._id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
-                    <div className="relative">
-                      <div className="h-48 bg-gradient-to-br from-blue-600 to-green-600 flex items-center justify-center">
-                        <div className="text-white text-center">
-                          <div className="text-5xl mb-2">🏏</div>
-                          <h3 className="text-2xl font-bold">{tournament.title}</h3>
-                        </div>
-                      </div>
-                      <div className="absolute top-4 right-4">
-                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-                          tournament.status === 'upcoming' ? 'bg-yellow-100 text-yellow-800' :
-                          tournament.status === 'active' ? 'bg-green-100 text-green-800' :
-                          tournament.status === 'completed' ? 'bg-blue-100 text-blue-800' :
-                          'bg-gray-100 text-gray-800'
-                        }`}>
-                          {tournament.status.charAt(0).toUpperCase() + tournament.status.slice(1)}
-                        </span>
-                      </div>
+                <div className="absolute top-4 right-4">
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                      tournament.status === "upcoming"
+                        ? "bg-yellow-100 text-yellow-800"
+                        : tournament.status === "active"
+                        ? "bg-green-100 text-green-800"
+                        : tournament.status === "completed"
+                        ? "bg-blue-100 text-blue-800"
+                        : "bg-gray-100 text-gray-800"
+                    }`}
+                  >
+                    {tournament.status.charAt(0).toUpperCase() +
+                      tournament.status.slice(1)}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <div className="space-y-4">
+                  <div className="flex items-center text-gray-600">
+                    <Calendar className="w-5 h-5 mr-2" />
+                    <span>
+                      {new Date(tournament.startDate).toLocaleDateString()} -{" "}
+                      {new Date(tournament.endDate).toLocaleDateString()}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center text-gray-600">
+                    <MapPin className="w-5 h-5 mr-2" />
+                    <span>{tournament.venue}</span>
+                  </div>
+
+                  <div className="flex items-center text-gray-600">
+                    <Users className="w-5 h-5 mr-2" />
+                    <span>
+                      {tournament.registeredTeams}/{tournament.maxTeams} Teams
+                    </span>
+                  </div>
+
+                  <div className="flex items-center text-gray-600">
+                    <Trophy className="w-5 h-5 mr-2" />
+                    <span>
+                      Prize Pool: ₹{tournament.prizePool.toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="pt-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm text-gray-600">
+                        Registration Progress
+                      </span>
+                      <span className="text-sm font-semibold text-gray-800">
+                        {Math.round(
+                          (tournament.registeredTeams / tournament.maxTeams) *
+                            100
+                        )}
+                        %
+                      </span>
                     </div>
-                    
-                    <div className="p-6">
-                      <div className="space-y-4">
-                        <div className="flex items-center text-gray-600">
-                          <Calendar className="w-5 h-5 mr-2" />
-                          <span>{new Date(tournament.startDate).toLocaleDateString()} - {new Date(tournament.endDate).toLocaleDateString()}</span>
-                        </div>
-                        
-                        <div className="flex items-center text-gray-600">
-                          <MapPin className="w-5 h-5 mr-2" />
-                          <span>{tournament.venue}</span>
-                        </div>
-                        
-                        <div className="flex items-center text-gray-600">
-                          <Users className="w-5 h-5 mr-2" />
-                          <span>{tournament.registeredTeams}/{tournament.maxTeams} Teams</span>
-                        </div>
-                        
-                        <div className="flex items-center text-gray-600">
-                          <Trophy className="w-5 h-5 mr-2" />
-                          <span>Prize Pool: ₹{tournament.prizePool.toLocaleString()}</span>
-                        </div>
-                        
-                        <div className="pt-4">
-                          <div className="flex justify-between items-center mb-2">
-                            <span className="text-sm text-gray-600">Registration Progress</span>
-                            <span className="text-sm font-semibold text-gray-800">
-                              {Math.round((tournament.registeredTeams / tournament.maxTeams) * 100)}%
-                            </span>
-                          </div>
-                          <div className="w-full bg-gray-200 rounded-full h-2">
-                            <div 
-                              className="bg-gradient-to-r from-blue-600 to-green-600 h-2 rounded-full" 
-                              style={{ width: `${Math.round((tournament.registeredTeams / tournament.maxTeams) * 100)}%` }}
-                            ></div>
-                          </div>
-                        </div>
-                        
-                        <div className="pt-4">
-                          <button 
-                            onClick={() => {
-                              setSelectedTournament(tournament);
-                              setShowRegistration(true);
-                            }}
-                            className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-green-700 transition duration-300"
-                          >
-                            Register Now
-                          </button>
-                        </div>
-                      </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-gradient-to-r from-blue-600 to-green-600 h-2 rounded-full"
+                        style={{
+                          width: `${Math.round(
+                            (tournament.registeredTeams /
+                              tournament.maxTeams) *
+                              100
+                          )}%`,
+                        }}
+                      ></div>
                     </div>
                   </div>
-                ))
-              ) : (
-                <div className="col-span-3 text-center py-12">
-                  <div className="text-gray-400 text-5xl mb-4">🏏</div>
-                  <h3 className="text-xl font-semibold text-gray-600">
-                    {activeTab === 'upcoming' 
-                      ? 'No upcoming tournaments at the moment.' 
-                      : 'No previous tournaments found.'}
-                  </h3>
-                  <p className="text-gray-500 mt-2">
-                    {activeTab === 'upcoming' 
-                      ? 'Check back later for new tournaments!' 
-                      : 'Stay tuned for future tournaments!'}
-                  </p>
+
+                  <div className="pt-4">
+                    <button
+                      onClick={() => {
+                        setSelectedTournament(tournament);
+                        setShowRegistration(true);
+                      }}
+                      className="w-full bg-gradient-to-r from-blue-600 to-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-blue-700 hover:to-green-700 transition duration-300"
+                    >
+                      Register Now
+                    </button>
+                  </div>
                 </div>
-              )}
+              </div>
             </div>
+          ))
+        ) : (
+          <div className="col-span-3 text-center py-12">
+            <div className="text-gray-400 text-5xl mb-4">🏏</div>
+            <h3 className="text-xl font-semibold text-gray-600">
+              {activeTab === "upcoming"
+                ? "No upcoming tournaments at the moment."
+                : "No previous tournaments found."}
+            </h3>
+            <p className="text-gray-500 mt-2">
+              {activeTab === "upcoming"
+                ? "Check back later for new tournaments!"
+                : "Stay tuned for future tournaments!"}
+            </p>
           </div>
-        </section>
+        )}
+      </div>
+    )}
+  </div>
+</section>
+
 
       {/* Registration Modal */}
       {showRegistration && (
