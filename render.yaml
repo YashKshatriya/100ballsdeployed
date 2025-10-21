@@ -2,8 +2,9 @@ services:
   - type: web
     name: cricket-tournament-api
     env: node
-    buildCommand: cd Backend && npm install
-    startCommand: cd Backend && node server.js
+    rootDir: Backend
+    buildCommand: npm install
+    startCommand: node server.js
     envVars:
       - key: NODE_ENV
         value: production
