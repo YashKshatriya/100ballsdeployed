@@ -4,12 +4,12 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import registrationRoutes from "./routes/registrationRoutes.js";
 import tournamentRoutes from "./routes/tournamentRoutes.js";
-import { validateRegistration, errorHandler, notFound } from "./middleware/validation.js";
+import { errorHandler, notFound } from "./middleware/validation.js";
 
 dotenv.config();
 const app = express();
 
-// connect to db
+// Connect to database
 connectDB();
 
 // CORS configuration
@@ -17,7 +17,6 @@ const corsOptions = {
   origin: function (origin, callback) {
     // For development, allow all origins
     if (process.env.NODE_ENV !== 'production') {
-      console.log('Allowing all origins in development');
       return callback(null, true);
     }
     
@@ -25,28 +24,25 @@ const corsOptions = {
     const allowedOrigins = [
       'http://localhost:3000',
       'http://localhost:3001',
-      'https://cricket-tournament-6w9k.onrender.com',
-      'https://cricket-tournament-frontend.onrender.com',
-      process.env.FRONTEND_URL
-    ].filter(Boolean); // Remove any undefined values
-    
-    // Log the origin for debugging
-    console.log('Request origin:', origin);
-    console.log('Allowed origins:', allowedOrigins);
+      'https://one00ballsdeployed-11.onrender.com',
+      'https://cricket-tournament-frontend.vercel.app',
+      'https://cricket-tournament-frontend.vercel.app',
+      'https://cricket-tournament-frontend.vercel.app/*',
+      'https://cricket-tournament-frontend-*.vercel.app',
+      process.env.FRONTEND_URL,
+      'https://cricket-tournament-frontend-*.vercel.app/*'
+    ].filter(Boolean);
     
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin || allowedOrigins.includes(origin)) {
-      console.log('Origin allowed:', origin);
       return callback(null, true);
     }
     
-    const msg = `The CORS policy for this site does not allow access from the specified origin: ${origin}`;
-    console.log('Origin not allowed:', msg);
-    return callback(new Error(msg), false);
+    return callback(new Error('Not allowed by CORS'), false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'x-auth-token'],
   exposedHeaders: ['Content-Range', 'X-Content-Range'],
   optionsSuccessStatus: 200
 };
